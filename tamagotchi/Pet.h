@@ -147,8 +147,13 @@ public:
             break;
         case Foodtype::PIZZA:
             cout << "some pizza";
+            break;
         case Foodtype::SANDWICH:
             cout << "a sandwich";
+            break;
+        default:
+            cout << "ERROR: Feeding failed.";
+            break;
         }
         cout << ".\nHunger level is now: " << getHunger() << endl;
 
@@ -177,27 +182,39 @@ public:
         currentEnergy += 5;
         setEnergy(currentEnergy);
 
+        if (getEnergy() > 10)
+        {
+            setEnergy(10);
+        }
+
         cout << getName() << " is sleeping.";
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 2; i++)
         {
             sleep(1);
             cout << ".";
         }
-        sleep(1);
 
-        cout << getName() << " woke up!" << endl;
+        sleep(2);
+
+        cout << "\n"
+             << getName() << " woke up!" << endl;
+
+        sleep(1);
 
         if (getEnergy() <= 5)
         {
-            cout << getName() << " is still tired. *Yawn*" << endl;
+            cout << "\n"
+                 << getName() << " is still tired. *Yawn*" << endl;
         }
         else if (getEnergy() >= 6 && getEnergy() <= 7)
         {
-            cout << getName() << " feels fine." << endl;
+            cout << "\n"
+                 << getName() << " feels fine." << endl;
         }
         else
         {
-            cout << getName() << " feels well rested!!" << endl;
+            cout << "\n"
+                 << getName() << " feels well rested!!" << endl;
         }
     }
 
@@ -210,20 +227,42 @@ public:
         currAge += 1;
         currHappiness -= 1;
         currHygiene -= 1;
-        currEnergy -= 10;
+        currEnergy -= 1;
 
-        setHunger(currHunger);
-        setAge(currAge);
-        setHappiness(currHappiness);
-        setHygiene(currHygiene);
-        setEnergy(currEnergy);
-
-        if (getHunger() < 0)
-        {
+        // hunger time based change
+        if (currHunger > 10)
+            setHunger(10);
+        else if (currHunger < 0)
             setHunger(0);
-        }
+        else
+            setHunger(currHunger);
+
+        // happiness time based change
+        if (currHappiness > 10)
+            setHappiness(10);
+        else
+            setHappiness(currHappiness);
+
+        // energy time based change
+        if (currEnergy > 10)
+            setEnergy(10);
+        else if (currEnergy < 0)
+            setEnergy(0);
+        else
+            setEnergy(currEnergy);
+
+        // hygiene time based change
+        if (currHygiene > 10)
+            setEnergy(10);
+        else if (currHygiene < 0)
+            setEnergy(0);
+        else
+            setEnergy(currHygiene);
+
+        setAge(currAge);
 
         cout << "Time passes..." << endl;
+        sleep(1);
         printStats();
 
         checkGameOver();
@@ -248,9 +287,11 @@ public:
 
     void checkEnergy()
     {
-        if (getEnergy() == 0)
+        if (getEnergy() <= 0)
         {
-            cout << name << " has fainted due to exhaustion!" << endl;
+            cout << "\n"
+                 << name << " has fainted due to exhaustion!\n"
+                 << endl;
             sleepPet();
         }
     }

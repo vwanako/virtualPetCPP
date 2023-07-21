@@ -29,7 +29,7 @@ int main()
             PerformUserAction(MyPet, foodOption);
             break;
         case 3:
-            sleepPet();
+            MyPet.sleepPet();
             break;
         case 5:
             return 0;

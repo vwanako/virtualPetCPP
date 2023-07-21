@@ -4,6 +4,7 @@
 #define PETFUNCTIONS_H
 
 #include "Pet.h" // Include the Pet class header
+#include <map>
 
 int chooseFood()
 {
@@ -18,30 +19,25 @@ int chooseFood()
 
 void PerformUserAction(Pet &pet, int option)
 {
-    switch (option)
+    static const map<int, Foodtype> foodMap =
+        {
+            {1, Foodtype::BRIGADEIRO},
+            {2, Foodtype::COXINHA},
+            {3, Foodtype::PIZZA},
+            {4, Foodtype::WHEY},
+            {5, Foodtype::SANDWICH},
+            {6, Foodtype::PICANHA}
+
+        };
+
+    // while the number read in chooseFood is not a valid option in the foodMap, prints that the choice is invalid and asks the user to choose again.
+    while (foodMap.find(option) == foodMap.end())
     {
-    case 1:
-        pet.feedPet(Foodtype::BRIGADEIRO);
-        break;
-    case 2:
-        pet.feedPet(Foodtype::COXINHA);
-        break;
-    case 3:
-        pet.feedPet(Foodtype::PIZZA);
-        break;
-    case 4:
-        pet.feedPet(Foodtype::WHEY);
-        break;
-    case 5:
-        pet.feedPet(Foodtype::SANDWICH);
-        break;
-    case 6:
-        pet.feedPet(Foodtype::PICANHA);
-        break;
-    default:
-        cout << "Invalid choice." << endl;
-        break;
+        cout << "Invalid food choice. Please try again." << endl;
+        option = chooseFood();
     }
+
+    pet.feedPet(foodMap.at(option));
 }
 
 #endif // PETFUNCTIONS_H
