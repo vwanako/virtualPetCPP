@@ -31,7 +31,7 @@ public:
         setAge(0);
 
         cout << "New pet created" << endl;
-        cout << "\nStatus:" << endl;
+        cout << "\nInitial stats:" << endl;
         cout << "Age: " << getAge() << "\nHunger: " << getHunger() << " \nEnergy: " << getEnergy()
              << " \nHappiness: " << getHappiness() << " \nHygiene: " << getHygiene() << endl;
     }
@@ -99,22 +99,27 @@ public:
     void feedPet(Foodtype foodType)
     {
         int amount = static_cast<int>(foodType);
-        hunger += amount;
+        int currentHunger = getHunger();
+
+        currentHunger += amount;
+        setHunger(currentHunger);
 
         // doesn't allow hunger to be larger than 10.
-        if (hunger > 10)
+        if (getHunger() > 10)
         {
-            hunger = 10;
+            setHunger(10);
         }
 
         // if hunger is between 8 and 10, increases happiness by 1
-        if (hunger >= 8 && hunger <= 10)
+        if (getHunger() >= 8 && getHunger() <= 10)
         {
-            happiness += 1;
+            int currentHappiness = getHappiness();
+            currentHappiness += 1;
+            setHappiness(currentHappiness);
         }
 
         // displays a text that the pet is eating for 1.5 seconds before continuing the action
-        cout << name << " is eating.";
+        cout << getName() << " is eating.";
         for (int i = 0; i < 2; i++)
         {
             sleep(1);
@@ -123,7 +128,7 @@ public:
         sleep(1);
         // sleep(1.5);
 
-        cout << "\nYou fed " << name << " with ";
+        cout << "\nYou fed " << getName() << " with ";
 
         // display food given by player
         switch (foodType)
@@ -145,7 +150,7 @@ public:
         case Foodtype::SANDWICH:
             cout << "a sandwich";
         }
-        cout << ".\nHunger level is now: " << hunger << endl;
+        cout << ".\nHunger level is now: " << getHunger() << endl;
 
         checkGameOver();
     }
@@ -154,7 +159,7 @@ public:
     {
         if (energy > 4)
         {
-            cout << name << " is too tired to play!" << endl;
+            cout << getName() << " is too tired to play!" << endl;
             return;
         }
 
@@ -164,25 +169,65 @@ public:
 
     void sleepPet()
     {
+        int currentEnergy;
+
+        // sets currentEnergy variable to the value of energy
+        currentEnergy = getEnergy();
+        // incrementes getEnergy variable and sets energy value through setEnergy
+        currentEnergy += 5;
+        setEnergy(currentEnergy);
+
+        cout << getName() << " is sleeping.";
+        for (int i = 0; i < 4; i++)
+        {
+            sleep(1);
+            cout << ".";
+        }
+        sleep(1);
+
+        cout << getName() << " woke up!" << endl;
+
+        if (getEnergy() <= 5)
+        {
+            cout << getName() << " is still tired. *Yawn*" << endl;
+        }
+        else if (getEnergy() >= 6 && getEnergy() <= 7)
+        {
+            cout << getName() << " feels fine." << endl;
+        }
+        else
+        {
+            cout << getName() << " feels well rested!!" << endl;
+        }
     }
 
     // time passing and game over
     void timePasses()
     {
-        hunger -= 2;
-        age += 1;
-        happiness -= 1;
-        hygiene -= 1;
-        energy -= 1;
+        int currHunger = getHunger(), currAge = getAge(), currHappiness = getHappiness(), currHygiene = getHygiene(), currEnergy = getEnergy();
 
-        if (hunger < 0)
+        currHunger -= 2;
+        currAge += 1;
+        currHappiness -= 1;
+        currHygiene -= 1;
+        currEnergy -= 10;
+
+        setHunger(currHunger);
+        setAge(currAge);
+        setHappiness(currHappiness);
+        setHygiene(currHygiene);
+        setEnergy(currEnergy);
+
+        if (getHunger() < 0)
         {
-            hunger = 0;
+            setHunger(0);
         }
 
+        cout << "Time passes..." << endl;
         printStats();
 
         checkGameOver();
+        checkEnergy();
     }
 
     void checkGameOver()
@@ -190,14 +235,23 @@ public:
         if (hunger == 0)
         {
             cout << "\nGame over! Your pet has starved to death. :(" << endl;
-            cout << "\nYour pet lived for: " << age << " years." << endl;
+            cout << "\nYour pet lived for: " << getAge() << " years." << endl;
             exit(0);
         }
         if (happiness == 0)
         {
             cout << "\nGame over! Your pet was too sad and ran away!" << endl;
-            cout << "\nYou had your pet for: " << age << " years." << endl;
+            cout << "\nYou had your pet for: " << getAge() << " years." << endl;
             exit(0);
+        }
+    }
+
+    void checkEnergy()
+    {
+        if (getEnergy() == 0)
+        {
+            cout << name << " has fainted due to exhaustion!" << endl;
+            sleepPet();
         }
     }
 

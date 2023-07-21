@@ -19,7 +19,7 @@ int main()
     {
 
         cout << "What should you do next? " << endl;
-        cout << "\n1: Feed \n2: Play \n3: Sleep \n4: Clean \n5: Quit game\n ";
+        cout << "\n1: Feed \n2: Play \n3: Sleep \n4: Clean \n5: Quit game\n";
         cin >> choice;
 
         switch (choice)
@@ -27,6 +27,9 @@ int main()
         case 1:
             foodOption = chooseFood();
             PerformUserAction(MyPet, foodOption);
+            break;
+        case 3:
+            sleepPet();
             break;
         case 5:
             return 0;
