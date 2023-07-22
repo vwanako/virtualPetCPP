@@ -218,6 +218,30 @@ public:
         }
     }
 
+    void cleanPet()
+    {
+        int currentHygiene = getHygiene();
+        currentHygiene += 10;
+        setHygiene(currentHygiene);
+
+        if (getHygiene() > 10)
+        {
+            setHygiene(10);
+        }
+
+        cout << "Bathing " << getName();
+        for (int i = 0; i < 3; i++)
+        {
+            sleep(1);
+            cout << ".";
+        }
+
+        sleep(1);
+
+        cout << "\nBath is done! \n"
+             << getName() << " is clean now." << endl;
+    }
+
     // time passing and game over
     void timePasses()
     {
@@ -253,11 +277,11 @@ public:
 
         // hygiene time based change
         if (currHygiene > 10)
-            setEnergy(10);
+            setHygiene(10);
         else if (currHygiene < 0)
-            setEnergy(0);
+            setHygiene(0);
         else
-            setEnergy(currHygiene);
+            setHygiene(currHygiene);
 
         setAge(currAge);
 

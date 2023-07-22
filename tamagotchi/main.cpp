@@ -31,6 +31,9 @@ int main()
         case 3:
             MyPet.sleepPet();
             break;
+        case 4:
+            MyPet.cleanPet();
+            break;
         case 5:
             return 0;
         }
